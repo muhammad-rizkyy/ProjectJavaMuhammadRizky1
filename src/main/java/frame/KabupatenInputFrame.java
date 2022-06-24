@@ -1,6 +1,11 @@
 package frame;
 
+import helpers.koneksi;
+
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class KabupatenInputFrame extends JFrame{
     private JPanel panel1;
@@ -15,12 +20,26 @@ public class KabupatenInputFrame extends JFrame{
         batalButton.addActionListener(e -> {
             dispose();
         });
+        simpanButton.addActionListener(e ->{
+            String nama = namaTextField.getText();
+            Connection c = koneksi.getConnection();
+            PreparedStatement ps;
+            try {
+                String insertSQL = "INSERT INTO kabupaten VALUES (NULL, ?)";
+                ps = c.prepareStatement(insertSQL);
+                ps.setString(1,nama);
+                ps.executeUpdate();
+                dispose();
+            } catch (SQLException ex) {
+                throw  new RuntimeException(ex);
+            }
+        });
         init();
     }
 
     public void init(){
         setContentPane(mainPanel);
-        setTitle("Input Kabupeten");
+        setTitle("Input Kabupaten");
         pack();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);

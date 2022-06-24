@@ -37,6 +37,10 @@ public class KabupatenViewFrame extends JFrame{
                 isiTable();
             }
         });
+        tambahButton.addActionListener(e -> {
+            KabupatenInputFrame inputFrame = new KabupatenInputFrame();
+            inputFrame.setVisible(true);
+        });
         cariButton.addActionListener(e -> {
             Connection c = koneksi.getConnection();
             String keyword = "%" + cariTextField.getText() + "%";
