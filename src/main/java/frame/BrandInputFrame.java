@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class KabupatenInputFrame extends JFrame{
+public class BrandInputFrame extends JFrame{
     private JPanel panel1;
     private JPanel mainPanel;
     private JTextField idTextField;
@@ -23,7 +23,7 @@ public class KabupatenInputFrame extends JFrame{
         this.id = id;
     }
 
-    public KabupatenInputFrame(){
+    public BrandInputFrame(){
         batalButton.addActionListener(e -> {
             dispose();
         });
@@ -38,14 +38,14 @@ public class KabupatenInputFrame extends JFrame{
             PreparedStatement ps;
             try {
                 if (id == 0) {
-                    String cekSQL = "SELECT * FROM kabupaten WHERE nama= ?";
+                    String cekSQL = "SELECT * FROM brandmotor WHERE nama= ?";
                     ps = c.prepareStatement(cekSQL);
                     ps.setString(1,nama);
                     ResultSet rs = ps.executeQuery();
                     if (rs.next()) {
                         JOptionPane.showMessageDialog(null,"Data sama sudah ada");
                     } else {
-                        String insertSQL = "INSERT INTO kabupaten VALUES (NULL, ?)";
+                        String insertSQL = "INSERT INTO brandmotor VALUES (NULL, ?)";
                         ps = c.prepareStatement(insertSQL);
                         ps.setString(1,nama);
                         ps.executeUpdate();
@@ -53,7 +53,7 @@ public class KabupatenInputFrame extends JFrame{
                     }
 
                 } else {
-                    String cekSQL = "SELECT * FROM kabupaten WHERE nama= ? AND id != ?";
+                    String cekSQL = "SELECT * FROM brandmotor WHERE nama= ? AND id != ?";
                     ps = c.prepareStatement(cekSQL);
                     ps.setString(1,nama);
                     ps.setInt(2,id);
@@ -61,7 +61,7 @@ public class KabupatenInputFrame extends JFrame{
                     if (rs.next()) {
                         JOptionPane.showMessageDialog(null,"Data sama sudah ada");
                     } else {
-                        String updateSQL = "UPDATE kabupaten SET nama= ? WHERE id= ?";
+                        String updateSQL = "UPDATE brandmotor SET nama= ? WHERE id= ?";
                         ps = c.prepareStatement(updateSQL);
                         ps.setString(1,nama);
                         ps.setInt(2,id);
@@ -80,7 +80,7 @@ public class KabupatenInputFrame extends JFrame{
 
     public void isiKomponen(){
         Connection c = koneksi.getConnection();
-        String findSQL = "SELECT * FROM kabupaten WHERE id= ?";
+        String findSQL = "SELECT * FROM brandmotor WHERE id= ?";
         PreparedStatement ps = null;
         try {
             ps = c.prepareStatement(findSQL);
@@ -97,7 +97,7 @@ public class KabupatenInputFrame extends JFrame{
 
     public void init(){
         setContentPane(mainPanel);
-        setTitle("Input Kabupaten");
+        setTitle("Input Brand Motor");
         pack();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);

@@ -12,7 +12,7 @@ import java.sql.*;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class KecamatanViewFrame extends JFrame{
+public class JenisMotorViewFrame extends JFrame{
     private JPanel panel1;
     private JPanel mainPanel;
     private JPanel cariPanel;
@@ -28,7 +28,7 @@ public class KecamatanViewFrame extends JFrame{
     private JButton cetakButton;
     private JButton tutupButton;
 
-    public KecamatanViewFrame(){
+    public JenisMotorViewFrame(){
         tutupButton.addActionListener(e -> {
             dispose();
         });
@@ -41,7 +41,7 @@ public class KecamatanViewFrame extends JFrame{
             }
         });
         tambahButton.addActionListener(e -> {
-            KecamatanInputFrame inputFrame = new KecamatanInputFrame();
+            JenisMotorInputFrame inputFrame = new JenisMotorInputFrame();
             inputFrame.setVisible(true);
         });
         cariButton.addActionListener(e -> {
@@ -52,7 +52,7 @@ public class KecamatanViewFrame extends JFrame{
             }
             Connection c = koneksi.getConnection();
             String keyword = "%" + cariTextField.getText() + "%";
-            String searchSQL = "SELECT K.*,B.nama AS nama_kabuapten FROM kecamatan K LEFT JOIN kabupaten B ON K.kabupaten_id = B.id WHERE K.nama like ? OR B.nama like ?";
+            String searchSQL = "SELECT K.*,B.nama AS nama_brand FROM jenismotor K LEFT JOIN brandmotor B ON K.brand_id = B.id WHERE K.nama like ? OR B.nama like ?";
             try {
                 PreparedStatement ps = c.prepareStatement(searchSQL);
                 ps.setString(1,keyword);
@@ -64,10 +64,10 @@ public class KecamatanViewFrame extends JFrame{
                 while (rs.next()){
                     row[0] = rs.getInt("id");
                     row[1] = rs.getString("nama");
-                    row[2] = rs.getInt("nama_kabupaten");
+                    row[2] = rs.getString("nama_brand");
                     row[3] = rs.getString("klasifikasi");
-                    row[4] = rs.getInt("populasi");
-                    row[5] = rs.getDouble("luas");
+                    row[4] = rs.getInt("silinder");
+                    row[5] = rs.getDouble("diameter");
                     dtm.addRow(row);
                 }
             } catch (SQLException ex) {
@@ -82,7 +82,7 @@ public class KecamatanViewFrame extends JFrame{
             }
             TableModel tm = viewTable.getModel();
             int id = Integer.parseInt(tm.getValueAt(barisTerpilih,0).toString());
-            KecamatanInputFrame inputFrame = new KecamatanInputFrame();
+            JenisMotorInputFrame inputFrame = new JenisMotorInputFrame();
             inputFrame.setId(id);
             inputFrame.isiKomponen();
             inputFrame.setVisible(true);
@@ -98,7 +98,7 @@ public class KecamatanViewFrame extends JFrame{
                 TableModel tm = viewTable.getModel();
                 int id = Integer.parseInt(tm.getValueAt(barisTerpilih,0).toString());
                 Connection c = koneksi.getConnection();
-                String deleteSQL = "delete from kecamatan where id = ?";
+                String deleteSQL = "delete from jenismotor where id = ?";
                 try {
                     PreparedStatement ps = c.prepareStatement(deleteSQL);
                     ps.setInt(1,id);
@@ -114,7 +114,7 @@ public class KecamatanViewFrame extends JFrame{
 
     public void init(){
         setContentPane(mainPanel);
-        setTitle("Data Kecamatan");
+        setTitle("Data Jenis Motor");
         pack();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -122,11 +122,11 @@ public class KecamatanViewFrame extends JFrame{
 
     public void isiTable(){
         Connection c = koneksi.getConnection();
-        String selectSQL = "SELECT K.*,B.nama AS nama_kabupaten FROM kecamatan K LEFT JOIN kabupaten B ON K.kabupaten_id = B.id";
+        String selectSQL = "SELECT K.*,B.nama AS nama_brand FROM jenismotor K LEFT JOIN brandmotor B ON K.brand_id = B.id";
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(selectSQL);
-            String header[] = {"id","Nama Kecamatan","Nama Kabupaten","Klasifikasi","Populasi","Luas"};
+            String header[] = {"id","Nama Jenis Motor","Nama Brand","Klasifikasi","Populasi","Diameter Piston"};
             DefaultTableModel dtm = new DefaultTableModel(header,0);
             viewTable.setModel(dtm);
             viewTable.getColumnModel().getColumn(0).setMaxWidth(32);
@@ -142,14 +142,14 @@ public class KecamatanViewFrame extends JFrame{
             while (rs.next()){
 
                 NumberFormat nf = NumberFormat.getInstance(Locale.US);
-                String rowPopulasi = nf.format(rs.getInt("populasi"));
-                String rowLuas = String.format("%,.2f", rs.getDouble("luas"));
+                String rowSilinder = nf.format(rs.getInt("silinder"));
+                String rowLuas = String.format("%,.2f", rs.getDouble("diameter"));
 
                 row[0] = rs.getInt("id");
                 row[1] = rs.getString("nama");
-                row[2] = rs.getString("nama_kabupaten");
+                row[2] = rs.getString("nama_brand");
                 row[3] = rs.getString("klasifikasi");
-                row[4] = rowPopulasi;
+                row[4] = rowSilinder;
                 row[5] = rowLuas;
                 dtm.addRow(row);
             }

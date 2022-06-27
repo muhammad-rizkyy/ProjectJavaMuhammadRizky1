@@ -11,7 +11,7 @@ public class koneksi {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("Connecting...");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/praktikum_java_proyek",
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/projectmuhammadrizky",
                     "root",
                     "");
             System.out.println("Connected!");

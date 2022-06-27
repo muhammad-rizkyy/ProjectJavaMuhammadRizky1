@@ -1,6 +1,9 @@
 package frame;
 
+import helpers.JasperDataSourceBuilder;
 import helpers.koneksi;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -9,7 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.*;
 
-public class KabupatenViewFrame extends JFrame{
+public class BrandViewFrame extends JFrame{
     private JPanel panel1;
     private JPanel mainPanel;
     private JPanel cariPanel;
@@ -25,7 +28,7 @@ public class KabupatenViewFrame extends JFrame{
     private JButton cetakButton;
     private JButton tutupButton;
 
-    public KabupatenViewFrame(){
+    public BrandViewFrame(){
         tutupButton.addActionListener(e -> {
             dispose();
         });
@@ -38,7 +41,7 @@ public class KabupatenViewFrame extends JFrame{
             }
         });
         tambahButton.addActionListener(e -> {
-            KabupatenInputFrame inputFrame = new KabupatenInputFrame();
+            BrandInputFrame inputFrame = new BrandInputFrame();
             inputFrame.setVisible(true);
         });
         cariButton.addActionListener(e -> {
@@ -49,7 +52,7 @@ public class KabupatenViewFrame extends JFrame{
             }
             Connection c = koneksi.getConnection();
             String keyword = "%" + cariTextField.getText() + "%";
-            String searchSQL = "select * from kabupaten where nama like ?";
+            String searchSQL = "select * from brandmotor where nama like ?";
             try {
                 PreparedStatement ps = c.prepareStatement(searchSQL);
                 ps.setString(1,keyword);
@@ -74,7 +77,7 @@ public class KabupatenViewFrame extends JFrame{
             }
             TableModel tm = viewTable.getModel();
             int id = Integer.parseInt(tm.getValueAt(barisTerpilih,0).toString());
-            KabupatenInputFrame inputFrame = new KabupatenInputFrame();
+            BrandInputFrame inputFrame = new BrandInputFrame();
             inputFrame.setId(id);
             inputFrame.isiKomponen();
             inputFrame.setVisible(true);
@@ -93,7 +96,7 @@ public class KabupatenViewFrame extends JFrame{
                 TableModel tm = viewTable.getModel();
                 int id = Integer.parseInt(tm.getValueAt(barisTerpilih,0).toString());
                 Connection c = koneksi.getConnection();
-                String deleteSQL = "DELETE FROM kabupaten WHERE id = ?";
+                String deleteSQL = "DELETE FROM brandmotor WHERE id = ?";
                 try {
                     PreparedStatement ps = c.prepareStatement(deleteSQL);
                     ps.setInt(1,id);
@@ -104,13 +107,45 @@ public class KabupatenViewFrame extends JFrame{
             }
         });
 
+        cetakButton.addActionListener(e -> {
+            Connection c = koneksi.getConnection();
+            String selectSQL = "SELECT * FROM brandmotor";
+            Object[][] row;
+            try {
+                Statement s = c.createStatement(
+                        ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+                ResultSet rs = s.executeQuery(selectSQL);
+                rs.last();
+                int jumlah = rs.getRow();
+                row = new Object[jumlah][2];
+                int i = 0;
+                rs.beforeFirst();
+                while (rs.next()){
+                    row[i][0] = rs.getInt("id");
+                    row[i][1] = rs.getString("nama");
+                    i++;
+                }
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            try {
+                JasperReport jasperReport = JasperCompileManager.compileReport("/Users/Asus/IdeaProjects/ProjectJavaMuhammadRizky/src/main/resources/brand_report.jrxml");
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,null, new JasperDataSourceBuilder(row));
+                JasperViewer viewer = new JasperViewer(jasperPrint, false);
+                viewer.setVisible(true);
+            } catch (JRException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         isiTable();
         init();
     }
 
     public void init(){
         setContentPane(mainPanel);
-        setTitle("Data Kabupaten");
+        setTitle("Data Brand Motor");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         pack();
@@ -118,11 +153,11 @@ public class KabupatenViewFrame extends JFrame{
 
     public void isiTable(){
         Connection c = koneksi.getConnection();
-        String selectSQL = "select * from kabupaten";
+        String selectSQL = "select * from brandmotor";
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(selectSQL);
-            String header[] = {"id","Nama Kabupaten"};
+            String header[] = {"id","Nama Brand Motor"};
             DefaultTableModel dtm = new DefaultTableModel(header,0);
             viewTable.setModel(dtm);
             Object[] row = new Object[2];

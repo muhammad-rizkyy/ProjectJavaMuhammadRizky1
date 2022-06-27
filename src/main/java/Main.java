@@ -1,13 +1,12 @@
 
-import frame.KabupatenViewFrame;
-import frame.KecamatanViewFrame;
-import helpers.koneksi;
+import frame.BrandViewFrame;
+import frame.JenisMotorViewFrame;
 
 public class Main {
     public static void main(String[] args) {
 //        koneksi.getConnection();
-//        KabupatenViewFrame viewFrame = new KabupatenViewFrame();
-        KecamatanViewFrame viewFrame = new KecamatanViewFrame();
+//        BrandViewFrame viewFrame = new BrandViewFrame();
+        JenisMotorViewFrame viewFrame = new JenisMotorViewFrame();
         viewFrame.setVisible(true);
     }
 }
