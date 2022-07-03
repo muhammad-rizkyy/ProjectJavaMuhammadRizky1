@@ -19,7 +19,6 @@ public class JenisMotorInputFrame extends JFrame{
     private JTextField silinderTextField;
     private JTextField luasTextField;
     private JLabel luasLabel;
-    private JTextField emailTextField;
     private ButtonGroup klasifikasiButtonGoup;
 
     private int id;
