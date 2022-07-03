@@ -196,26 +196,6 @@ public class JenisMotorInputFrame extends JFrame{
         klasifikasiButtonGoup.add(tipeARadioButton);
         klasifikasiButtonGoup.add(tipeBRadioButton);
 
-//        luasLabel.setText("Luas (Km\u00B2)");
-//        silinderTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-//        silinderTextField.setText("0");
-//        silinderTextField.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent ke) {
-//                silinderTextField.setEditable(
-//                        (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') || ke.getKeyCode() == KeyEvent.VK_BACK_SPACE || ke.getKeyCode() == KeyEvent.VK_LEFT || ke.getKeyCode() == KeyEvent.VK_RIGHT);
-//            }
-//        });
-
-//        luasTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-//        luasTextField.setText("0");
-//        luasTextField.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent ke) {
-//                luasTextField.setEditable(
-//                        (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') || ke.getKeyCode() == KeyEvent.VK_BACK_SPACE || ke.getKeyCode() == KeyEvent.VK_LEFT || ke.getKeyCode() == KeyEvent.VK_RIGHT || ke.getKeyCode() == KeyEvent.VK_PERIOD);
-//            }
-//        });
     }
     }
 

@@ -130,7 +130,7 @@ public class BrandViewFrame extends JFrame{
                 throw new RuntimeException(ex);
             }
             try {
-                JasperReport jasperReport = JasperCompileManager.compileReport("/Users/Asus/IdeaProjects/ProjectJavaMuhammadRizky/src/main/resources/brand_report.jrxml");
+                JasperReport jasperReport = JasperCompileManager.compileReport("/Users/Asus/IdeaProjects/ProjectJavaMuhammadRizky1/src/main/resources/brand_report.jrxml");
                 JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,null, new JasperDataSourceBuilder(row));
                 JasperViewer viewer = new JasperViewer(jasperPrint, false);
                 viewer.setVisible(true);
